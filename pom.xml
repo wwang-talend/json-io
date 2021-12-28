@@ -6,7 +6,7 @@
     <groupId>com.cedarsoftware</groupId>
     <artifactId>json-io</artifactId>
     <packaging>bundle</packaging>
-    <version>4.13.0</version>
+    <version>4.13.0-TALEND</version>
     <description>Java JSON serialization</description>
     <url>https://github.com/jdereg/json-io</url>
 
@@ -89,6 +89,8 @@
             Name of the benchmark Uber-JAR to generate.
           -->
         <uberjar.name>benchmarks</uberjar.name>
+
+        <talend.nexus.url>https://artifacts-oss.talend.com</talend.nexus.url>
     </properties>
 
     <pluginRepositories>
@@ -108,12 +110,24 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>talend_nexus_deployment</id>
+            <url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceSnapshot/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>talend_nexus_deployment</id>
+            <url>${talend.nexus.url}/nexus/content/repositories/TalendOpenSourceRelease/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </distributionManagement>
 
@@ -152,7 +166,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.plugin.compiler}</version>
                 <configuration>
-                    <release>7</release>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <!--not valid for our jdk 8 jenkins env-->
+                    <!--<release>7</release>-->
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <!-- <verbose>true</verbose> -->
                 </configuration>
@@ -203,6 +220,7 @@
                 </executions>
             </plugin>
 
+            <!--
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -214,6 +232,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
